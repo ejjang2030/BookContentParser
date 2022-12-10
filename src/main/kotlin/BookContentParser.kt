@@ -1,7 +1,4 @@
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import com.google.gson.JsonStreamParser
+import com.google.gson.*
 import com.google.gson.stream.JsonReader
 import org.jsoup.Connection
 import org.jsoup.Jsoup
@@ -23,7 +20,7 @@ object BookContentParser {
         return NAVER_URI.append("json")
     }
 
-    fun searchBook(clientId: String, clientIdSecret: String, dataType: DataType, title: String, display: Int? = null, start: Int? = null, sort: String? = null) {
+    fun searchBook(clientId: String, clientIdSecret: String, dataType: DataType, title: String, display: Int? = null, start: Int? = null, sort: String? = null): JsonArray {
         val uri = when(dataType) {
             DataType.XML -> getUriFromXML()
             DataType.JSON -> getUriFromJSON()
@@ -46,7 +43,23 @@ object BookContentParser {
         println(document)
 
         val element = JsonParser().parse(document)
-        var books = element.asJsonObject.get("items")
-        println(books)
+        return element.asJsonObject.get("items").asJsonArray
+    }
+
+    fun getContent(jsonArray: JsonArray, index: Int): String {
+        val book = jsonArray.get(index).asJsonObject
+        val link = book.get("link").toString().replace("\"", "")
+        var html = Jsoup.connect(link)
+            .method(Connection.Method.GET)
+            .ignoreContentType(true)
+            .execute().parse().select("div[class=infoItem_data_text__bUgVI]").get(2).html().toString()
+        html = html.replace("<br>", "\n").replace("</br>", "\n")
+        return html
+    }
+
+    fun getTitle(jsonArray: JsonArray, index: Int): String {
+        val book = jsonArray.get(index).asJsonObject
+        val title = book.get("title").toString().replace("\"", "")
+        return title
     }
 }
