@@ -52,9 +52,25 @@ object BookContentParser {
         var html = Jsoup.connect(link)
             .method(Connection.Method.GET)
             .ignoreContentType(true)
-            .execute().parse().select("div[class=infoItem_data_text__bUgVI]").get(2).html().toString()
-        html = html.replace("<br>", "\n").replace("</br>", "\n")
-        return html
+            .execute().parse().select("div[class=infoItem_data_text__bUgVI]")
+        var content: String = ""
+        for(i in 0 until html.size) {
+            println("$i 번째 : ${html.get(i).html()}")
+            if(html.get(i).html().contains("<br>")) {
+                content = html.get(i).html().toString()
+            }
+        }
+        println()
+        println()
+//        content = content.replace("<br>", "\n").replace("</br>", "\n").replace("&amp;", "&")
+
+        return content
+    }
+
+    fun getContentToList(jsonArray: JsonArray, index: Int): List<String> {
+        val contents = getContent(jsonArray, index)
+        val list = contents.split("<br>").toMutableList().filter { it != "" }
+        return list
     }
 
     fun getTitle(jsonArray: JsonArray, index: Int): String {
