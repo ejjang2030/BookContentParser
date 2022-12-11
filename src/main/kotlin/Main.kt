@@ -5,7 +5,7 @@ fun main(args: Array<String>) {
     val jsonArray = BookContentParser.searchBook(SecretId.CLIENT_ID,
         SecretId.CLIENT_ID_SECRET,
         BookContentParser.DataType.JSON,
-        "파이썬")
+        "자바")
     println(jsonArray)
     for(i in 0 until jsonArray.size()) {
         println("$i 번 : ${jsonArray[i]}")
@@ -22,4 +22,5 @@ fun main(args: Array<String>) {
     }
     println(list)
 
+    println("Tokenized : ${ContentTreeParser(list).getTree()}")
 }
