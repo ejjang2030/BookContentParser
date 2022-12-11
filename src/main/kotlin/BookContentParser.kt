@@ -1,3 +1,5 @@
+package com.ejjang2030.bookcontentparser
+
 import com.google.gson.*
 import com.google.gson.stream.JsonReader
 import org.jsoup.Connection
@@ -62,14 +64,17 @@ object BookContentParser {
         }
         println()
         println()
-//        content = content.replace("<br>", "\n").replace("</br>", "\n").replace("&amp;", "&")
+        content = content.replace("&amp;", "&")
+            .replace("<b>", "")
+            .replace("</b>", "")
 
         return content
     }
 
     fun getContentToList(jsonArray: JsonArray, index: Int): List<String> {
         val contents = getContent(jsonArray, index)
-        val list = contents.split("<br>").toMutableList().filter { it != "" }
+        var list = contents.split("<br>").toMutableList().filter { it != "" }
+        println("list length : ${list.size}")
         return list
     }
 

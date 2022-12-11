@@ -1,12 +1,13 @@
+import com.ejjang2030.bookcontentparser.BookContentParser
 import java.util.*
 
 fun main(args: Array<String>) {
     val jsonArray = BookContentParser.searchBook(SecretId.CLIENT_ID,
         SecretId.CLIENT_ID_SECRET,
         BookContentParser.DataType.JSON,
-        "도커")
+        "파이썬")
     println(jsonArray)
-    for(i in 0..jsonArray.size() - 1) {
+    for(i in 0 until jsonArray.size()) {
         println("$i 번 : ${jsonArray[i]}")
     }
 
