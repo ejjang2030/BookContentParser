@@ -1,4 +1,4 @@
-class Node<T>(val content: T): Comparable<T> {
+class Node<T>(val content: T){
     // https://leveloper.tistory.com/203 참고
     var parent: Node<T>? = null
 
