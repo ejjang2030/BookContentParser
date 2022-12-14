@@ -1,5 +1,6 @@
 import com.ejjang2030.bookcontentparser.BookContentParser
 import java.util.*
+import javax.swing.text.AbstractDocument.Content
 
 fun main(args: Array<String>) {
     val jsonArray = BookContentParser.searchBook(SecretId.CLIENT_ID,
@@ -23,4 +24,20 @@ fun main(args: Array<String>) {
     println(list)
 
     println("Tokenized : ${ContentTreeParser(list).getTree()}")
+
+    val (tokenSet, items) = ContentTreeParser(list).getTree()
+
+    for(item in items.withIndex()) {
+        for(token in tokenSet.withIndex()) {
+            if(item.value.second == token.value) {
+                val sb = StringBuilder()
+                for(i in 0 until token.index) {
+                    sb.append("  ")
+                }
+                sb.append(item.value.first)
+                println(sb)
+            }
+        }
+    }
 }
+
