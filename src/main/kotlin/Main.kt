@@ -59,34 +59,7 @@ fun test1() {
 }
 
 fun test2() {
-    val retrofit = NaverSearching
-            .getApiClient(SecretId.CLIENT_ID, SecretId.CLIENT_ID_SECRET)
-            .create(NaverSearchingService::class.java)
-
-    retrofit.searchBook("파이썬").enqueue(object: Callback<BookSearchResult> {
-        override fun onResponse(call: Call<BookSearchResult>, response: Response<BookSearchResult>) {
-            if(response.isSuccessful) {
-                val result: BookSearchResult? = response.body()
-                if(result != null) {
-                    val items = result.items
-                    items.forEachIndexed { index, item ->
-                        println("$index : ${item.title}")
-                    }
-                    val scanner = Scanner(System.`in`)
-                    print("번호를 입력하세요 : ")
-                    val number = scanner.nextInt()
-                    val bookInfo = items[number]
-
-                } else {
-                    println("검색결과가 없습니다.")
-                }
-            } else {
-                println(response.message())
-            }
-        }
-
-        override fun onFailure(call: Call<BookSearchResult>, t: Throwable) {
-            println(t.message)
-        }
-    })
+    val naver = NaverSearching(SecretId.CLIENT_ID, SecretId.CLIENT_ID_SECRET)
+    println(naver.searchBookInDetails(d_titl = "자바의 정석").getBookSearhResult())
 }
+
