@@ -8,12 +8,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 object NaverSearching {
-    val NAVER_BASE_URL = "https://openapi.naver.com/v1"
+    val NAVER_BASE_URL = "https://openapi.naver.com/v1/"
 
-    fun getApiClient(): Retrofit {
+    fun getApiClient(clientId: String, clientIdSecret: String): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(NAVER_BASE_URL)
-                .client(provideOkHttpClient(NaverInterceptor()))
+                .client(provideOkHttpClient(NaverInterceptor(clientId, clientIdSecret)))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
     }
@@ -26,13 +26,13 @@ object NaverSearching {
                 build()
             }
 
-    class NaverInterceptor : Interceptor {
+    class NaverInterceptor(private val clientId: String, private val clientIdSecret: String) : Interceptor {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain)
                 : Response = with(chain) {
             val newRequest = request().newBuilder()
-                    .addHeader("X-Naver-Client-Id", "33chRuAiqlSn5hn8tIme")
-                    .addHeader("X-Naver-Client-Secret", "fyfwt9PCUN")
+                    .addHeader("X-Naver-Client-Id", clientId)
+                    .addHeader("X-Naver-Client-Secret", clientIdSecret)
                     .build()
 
             proceed(newRequest)
