@@ -9,9 +9,9 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation "org.jsoup:jsoup:1.15.3"
-    implementation "com.squarsup.retrofit2:converter-gson:2.9.0"
-    implementation "com.google.code.gson:gson:2.9.1"
-    implementation 'com.github.ejjang2030:BookContentParser:1.0.1'
+    compile 'com.squareup.retrofit2:retrofit:2.9.0'
+    compile "org.jsoup:jsoup:1.15.3"
+    compile "com.squarsup.retrofit2:converter-gson:2.9.0"
+    compile "com.google.code.gson:gson:2.9.1"
+    compile 'com.github.ejjang2030:BookContentParser:1.0.1'
 }
