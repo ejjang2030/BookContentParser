@@ -24,9 +24,9 @@ dependencies {
 ```
 
 ## 주요 사용 라이브러리
-[![Retrofit 2.9.0](https://img.shields.io/badge/Public-yes-green.svg?style=flat)]()
-[![Jsoup 1.15.3](https://img.shields.io/badge/Public-yes-green.svg?style=flat)]()
-[![Gson 2.9.0](https://img.shields.io/badge/Public-yes-green.svg?style=flat)]()
+[![Retrofit 2.9.0](https://img.shields.io/badge/Retrofit-2.9.0-blue.svg?style=flat)]()
+[![Jsoup 1.15.3](https://img.shields.io/badge/Jsoup-1.15.3-black.svg?style=flat)]()
+[![Gson 2.9.0](https://img.shields.io/badge/Gson-2.9.0-green.svg?style=flat)]()
 
 ## 일부 시연 영상
 [![일부 시연 영상](http://img.youtube.com/vi/Jx4xAcmqnrw/0.jpg)](https://youtu.be/Jx4xAcmqnrw)
