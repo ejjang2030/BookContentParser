@@ -23,30 +23,31 @@ data class BookSearchResult(
 }
 
 data class BookResult(
-        @SerializedName("title") val title: String,
-        @SerializedName("link") val link: String,
-        @SerializedName("image") val image: String,
-        @SerializedName("author") val author: String,
-        @SerializedName("discount") val discount: Int,
-        @SerializedName("publisher") val publisher: String,
-        @SerializedName("pubdate") val pubdate: String,
-        @SerializedName("isbn") val isbn: String,
-        @SerializedName("description") val description: String
+    @SerializedName("title") val title: String,
+    @SerializedName("link") val link: String,
+    @SerializedName("image") val image: String,
+    @SerializedName("author") val author: String,
+    @SerializedName("discount") val discount: Int,
+    @SerializedName("publisher") val publisher: String,
+    @SerializedName("pubdate") val pubdate: String,
+    @SerializedName("isbn") val isbn: String,
+    @SerializedName("description") val description: String
 ) {
     override fun toString(): String {
         val sb = StringBuilder()
         sb.append("title : ${this.title}\n")
-                .append("link : ${this.link}\n")
-                .append("image : ${this.image}\n")
-                .append("author : ${this.author}\n")
-                .append("discount : ${this.discount}\n")
-                .append("publisher : ${this.publisher}\n")
-                .append("pubdate : ${this.pubdate}\n")
-                .append("isbn : ${this.isbn}\n")
-                .append("description : \"${this.description}\"\n")
+            .append("link : ${this.link}\n")
+            .append("image : ${this.image}\n")
+            .append("author : ${this.author}\n")
+            .append("discount : ${this.discount}\n")
+            .append("publisher : ${this.publisher}\n")
+            .append("pubdate : ${this.pubdate}\n")
+            .append("isbn : ${this.isbn}\n")
+            .append("description : \"${this.description}\"\n")
         return sb.toString()
     }
 }
+
 
 data class BookCatalogResult(
     val bookResult: BookResult,
@@ -76,6 +77,7 @@ data class BookCatalogResult(
         return sb.toString()
     }
 }
+
 
 data class BookSpec(
         val pages: Int,
