@@ -1,11 +1,8 @@
-package api
+package api.naver
 
 import okhttp3.*
-import okio.Timeout
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -127,8 +124,8 @@ class NaverSearching(val clientId: String, val clientIdSecret: String) {
     }
 
     fun getBookCatalog(
-            bookResult: BookResult,
-            callback: ((Call<ResponseBody>, retrofit2.Response<ResponseBody>?, BookCatalogResult?, Throwable?) -> Unit)? = null
+        bookResult: BookResult,
+        callback: ((Call<ResponseBody>, retrofit2.Response<ResponseBody>?, BookCatalogResult?, Throwable?) -> Unit)? = null
     ) {
             val number: String = getCatalogNumber(bookResult.link)
             naverShoppingSearchingService.getBookCatalog(number).enqueue(object: Callback<ResponseBody> {
@@ -148,9 +145,9 @@ class NaverSearching(val clientId: String, val clientIdSecret: String) {
         }
 
     private fun createBookCatalogResult(
-            bookResult: BookResult,
-            catalogNumber: String,
-            html: String
+        bookResult: BookResult,
+        catalogNumber: String,
+        html: String
     ): BookCatalogResult {
         val document: Document = Jsoup.parse(html)
         val body = document.body()
@@ -163,7 +160,7 @@ class NaverSearching(val clientId: String, val clientIdSecret: String) {
                 .replace("mm", "").split("*").map { it.toInt() }
         val (introduction, publisherComment, contentTable) = body
                 .getElementsByClass("infoItem_data_text__bUgVI")
-                .map { it.text().toString() }
+                .map { it.html().toString() }
         val grade = body.getElementsByClass("bookReview_grade__0kV7o")
                 .text().replace("평점", "")
         val starRate = if(grade.isEmpty()) null else grade.toDouble()
@@ -177,10 +174,11 @@ class NaverSearching(val clientId: String, val clientIdSecret: String) {
                 .replace(",", "").toInt()
         var ebookPrice: Int? = null
         if(prices.last()?.getElementsByTag("span") != null) {
-            ebookPrice = prices.last()?.getElementsByTag("span")!!.text().toString()
+            val ebprice = prices.last()?.getElementsByTag("span")!!.text().toString()
                     .replace("구매 ", "")
                     .replace("원", "")
-                    .replace(",", "").toInt()
+                    .replace(",", "")
+            ebookPrice = if(ebprice.isEmpty()) null else ebprice.toInt()
         }
         val authorIntroduction = body.getElementsByClass("authorIntroduction_introduce_text__RYZDj")
                 .text().toString()

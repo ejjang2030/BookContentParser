@@ -16,9 +16,27 @@ class ContentTreeParser(val list: List<String>) {
             }
             Pair(element, token)
         }.toList()
-
-        println("목차 개요 : $contentTokenList")
-
         return Pair(contentTokenList, listWithTokens)
+    }
+
+    override fun toString(): String {
+        println("list length : ${list.size}")
+        val (tokenSet, items) = getTree()
+        println("목차 개요 : $tokenSet")
+        val sb1 = StringBuilder()
+        for(item in items.withIndex()) {
+            for(token in tokenSet.withIndex()) {
+                if(item.value.second == token.value) {
+                    val sb = StringBuilder()
+                    for(i in 0 until token.index) {
+                        sb.append("  ")
+                    }
+                    sb.append(item.value.first)
+                    sb.append("\n")
+                    sb1.append(sb.toString())
+                }
+            }
+        }
+        return sb1.toString()
     }
 }

@@ -1,4 +1,4 @@
-package api
+package api.naver
 
 import com.google.gson.annotations.SerializedName
 
@@ -49,16 +49,16 @@ data class BookResult(
 }
 
 data class BookCatalogResult(
-        val bookResult: BookResult,
-        val catalogNumber: String,
-        val mainTitle: String,
-        val subTitle: String?,
-        val category: String,
-        val spec: BookSpec,
-        val descriptions: BookDescriptions,
-        val evaluations: BookEvaluations,
-        val price: Int,
-        val ebookPrice: Int?
+    val bookResult: BookResult,
+    val catalogNumber: String,
+    val mainTitle: String,
+    val subTitle: String?,
+    val category: String,
+    val spec: BookSpec,
+    val descriptions: BookDescriptions,
+    val evaluations: BookEvaluations,
+    val price: Int,
+    val ebookPrice: Int?
 ) {
     override fun toString(): String {
         val sb = StringBuilder()
@@ -69,7 +69,7 @@ data class BookCatalogResult(
         sb.append("subTitle=$subTitle\n")
         sb.append("category=$category\n")
         sb.append("spec=$spec\n")
-        sb.append("descriptions=$descriptions\n")
+        sb.append("descriptions----\n$descriptions\n")
         sb.append("evaluations=$evaluations\n")
         sb.append("price=$price\n")
         sb.append("ebookPrice=$ebookPrice\n")
@@ -90,7 +90,20 @@ data class BookDescriptions(
         val publisherComment: String,
         val contentTable: String,
         val authorIntroduction: String
-)
+) {
+    override fun toString(): String {
+        val sb = StringBuilder()
+        sb.append("<introduction>\n")
+        sb.append("${introduction.replace("<br>", "\n")}\n")
+        sb.append("<publisherComment>\n")
+        sb.append("${publisherComment.replace("<br>", "\n")}\n")
+        sb.append("<contentTable>\n")
+        sb.append("${contentTable.replace("<br>", "\n")}\n")
+        sb.append("<authorIntroduction>\n")
+        sb.append("${authorIntroduction.replace("<br>", "\n")}\n")
+        return sb.toString()
+    }
+}
 
 data class BookEvaluations(
         val starRate: Double? = null,
