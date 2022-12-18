@@ -60,6 +60,23 @@ fun test1() {
 
 fun test2() {
     val naver = NaverSearching(SecretId.CLIENT_ID, SecretId.CLIENT_ID_SECRET)
-    println(naver.searchBookInDetails(d_titl = "자바의 정석").getBookSearhResult())
+    naver.searchBook("파이썬") { call, res, t ->
+        if(res != null) {
+            if(res.isSuccessful) {
+                val bookResult = res.body()
+                if(bookResult != null) naver.getBookCatalog(bookResult.items[0]) { call2, res2, bookCatalog, t2 ->
+                    if(res2 != null) {
+                        println("catalog : $bookCatalog")
+                    } else {
+                        println(t2!!.message)
+                    }
+                }
+            }
+        } else {
+            if(t != null) {
+                println(t.message)
+            }
+        }
+    }
 }
 

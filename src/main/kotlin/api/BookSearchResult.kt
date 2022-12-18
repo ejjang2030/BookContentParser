@@ -43,7 +43,56 @@ data class BookResult(
                 .append("publisher : ${this.publisher}\n")
                 .append("pubdate : ${this.pubdate}\n")
                 .append("isbn : ${this.isbn}\n")
-                .append("description : \"${this.description}\"\n\n")
+                .append("description : \"${this.description}\"\n")
         return sb.toString()
     }
 }
+
+data class BookCatalogResult(
+        val bookResult: BookResult,
+        val catalogNumber: String,
+        val mainTitle: String,
+        val subTitle: String?,
+        val category: String,
+        val spec: BookSpec,
+        val descriptions: BookDescriptions,
+        val evaluations: BookEvaluations,
+        val price: Int,
+        val ebookPrice: Int?
+) {
+    override fun toString(): String {
+        val sb = StringBuilder()
+        sb.append("[BookCatalogResult]\n")
+        sb.append(bookResult)
+        sb.append("catalogNumber=$catalogNumber\n")
+        sb.append("mainTitle=$mainTitle\n")
+        sb.append("subTitle=$subTitle\n")
+        sb.append("category=$category\n")
+        sb.append("spec=$spec\n")
+        sb.append("descriptions=$descriptions\n")
+        sb.append("evaluations=$evaluations\n")
+        sb.append("price=$price\n")
+        sb.append("ebookPrice=$ebookPrice\n")
+        return sb.toString()
+    }
+}
+
+data class BookSpec(
+        val pages: Int,
+        val weight: Int,
+        val width: Int,
+        val height: Int,
+        val thickness: Int
+)
+
+data class BookDescriptions(
+        val introduction: String,
+        val publisherComment: String,
+        val contentTable: String,
+        val authorIntroduction: String
+)
+
+data class BookEvaluations(
+        val starRate: Double? = null,
+        val ranking: String? = null
+)
