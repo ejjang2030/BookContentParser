@@ -9,7 +9,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
-class NaverSearching(val clientId: String, val clientIdSecret: String) {
+class NaverSearching(
+    private val clientId: String,
+    private val clientIdSecret: String
+    ) {
     val NAVER_BASE_URL = "https://openapi.naver.com/v1/"
     val NAVER_SHOPPING_SEARCHING_URL = "https://search.shopping.naver.com/"
     private var retrofit: Retrofit
