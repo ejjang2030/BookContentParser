@@ -23,6 +23,45 @@ dependencies {
 }
 ```
 
+## 샘플 코드
+### NaverSearching
+```kotlin
+val naver = NaverSearching(SecretId.NAVER_CLIENT_ID, SecretId.NAVER_CLIENT_ID_SECRET)
+naver.searchBook("자바스크립트") { call, response, throwable ->
+    if (response != null) { // Retrofit의 onResponse()에 해당하는 블록 : onResponse에서 throwable을 null로 가져옴
+        if(response.isSuccessful) {
+            val result = response.body() // BookSearchResult 객체로 가져옴
+            if(result != null) {
+                println(result)
+            }
+        } else {
+            println(response.message())
+        }
+    } else { // Retrofit의 onFailure()에 해당하는 블록 : onFailure에서 response를 null로 가져옴
+        println(throwable?.message)
+    }
+}
+```
+
+### KakaoSearching
+```kotlin
+val kakao = KakaoSearching(SecretId.KAKAO_REST_API_KEY)
+kakao.searchBook("자바스크립트") { call, response, throwable ->
+    if (response != null) { // Retrofit의 onResponse()에 해당하는 블록 : onResponse에서 throwable을 null로 가져옴
+        if(response.isSuccessful) {
+            val result = response.body() // KakaoBookSearchResult 객체로 가져옴
+            if(result != null) {
+                println(result.documents)
+            }
+        } else {
+            println(response.message())
+        }
+    } else { // Retrofit의 onFailure()에 해당하는 블록 : onFailure에서 response를 null로 가져옴
+        println(throwable?.message)
+    }
+}
+```
+
 ## 주요 사용 라이브러리
 [![Retrofit 2.9.0](https://img.shields.io/badge/Retrofit-2.9.0-blue.svg?style=flat)]()
 [![Jsoup 1.15.3](https://img.shields.io/badge/Jsoup-1.15.3-yellow.svg?style=flat)]()
