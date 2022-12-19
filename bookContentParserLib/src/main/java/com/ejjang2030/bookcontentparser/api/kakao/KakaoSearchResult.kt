@@ -5,32 +5,29 @@ import com.google.gson.annotations.SerializedName
 sealed class KakaoSearchResult {
     data class KakaoBookSearchResult(
         @SerializedName("meta") val meta: KakaoSearchMetaResult,
-        @SerializedName("documents") val documents: KakaoSearchDocsResult.KakaoSearchDocsBookResult
+        @SerializedName("documents") val documents: List<KakaoSearchDocsResult.KakaoSearchDocsBookResult>
     ): KakaoSearchResult()
     data class KakaoCafeSearchResult(
         @SerializedName("meta") val meta: KakaoSearchMetaResult,
-        @SerializedName("documents") val documents: KakaoSearchDocsResult.KakaoSearchDocsCafeResult
+        @SerializedName("documents") val documents: List<KakaoSearchDocsResult.KakaoSearchDocsCafeResult>
     ): KakaoSearchResult()
     data class KakaoBlogSearchResult(
         @SerializedName("meta") val meta: KakaoSearchMetaResult,
-        @SerializedName("documents") val documents: KakaoSearchDocsResult.KakaoSearchDocsBlogResult
+        @SerializedName("documents") val documents: List<KakaoSearchDocsResult.KakaoSearchDocsBlogResult>
     ): KakaoSearchResult()
     data class KakaoImageSearchResult(
         @SerializedName("meta") val meta: KakaoSearchMetaResult,
-        @SerializedName("documents") val documents: KakaoSearchDocsResult.KakaoSearchDocsImageResult
+        @SerializedName("documents") val documents: List<KakaoSearchDocsResult.KakaoSearchDocsImageResult>
     ): KakaoSearchResult()
     data class KakaoVideosSearchResult(
         @SerializedName("meta") val meta: KakaoSearchMetaResult,
-        @SerializedName("documents") val documents: KakaoSearchDocsResult.KakaoSearchDocsVideosResult
+        @SerializedName("documents") val documents: List<KakaoSearchDocsResult.KakaoSearchDocsVideosResult>
     ): KakaoSearchResult()
     data class KakaoWebSearchResult(
         @SerializedName("meta") val meta: KakaoSearchMetaResult,
-        @SerializedName("documents") val documents: KakaoSearchDocsResult.KakaoSearchDocsWebResult
+        @SerializedName("documents") val documents: List<KakaoSearchDocsResult.KakaoSearchDocsWebResult>
     ): KakaoSearchResult()
 }
-
-
-
 
 data class KakaoSearchMetaResult(
     @SerializedName("total_count") val total_count: Int,
