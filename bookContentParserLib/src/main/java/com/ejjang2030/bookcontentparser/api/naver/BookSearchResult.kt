@@ -80,11 +80,11 @@ data class BookCatalogResult(
 
 
 data class BookSpec(
-        val pages: Int,
-        val weight: Int,
-        val width: Int,
-        val height: Int,
-        val thickness: Int
+        val pages: Int?,
+        val weight: Int?,
+        val width: Int?,
+        val height: Int?,
+        val thickness: Int?
 )
 
 data class BookDescriptions(

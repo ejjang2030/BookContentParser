@@ -112,10 +112,24 @@ class NaverSearching(
         val bookInfoDetail = body.getElementsByClass("bookBasicInfo_info_detail__I0Fx5")
         val category: String = bookInfoDetail.first()?.text().toString()
         val bookSpec = bookInfoDetail[1].getElementsByClass("bookBasicInfo_spec__qmQ_N")
-        val pages: Int = bookSpec[0].text().toString().replace("쪽", "").toInt()
-        val weight: Int = bookSpec[1].text().toString().replace("g", "").toInt()
-        val (width, height, thickness) = bookSpec[2].text().toString()
-            .replace("mm", "").split("*").map { it.toInt() }
+        var pages: Int? = null; var weight: Int? = null; var height: Int? = null; var width: Int? = null; var thickness: Int? = null
+        for(spec in bookSpec) {
+            val text = spec.text().toString()
+            when {
+                text.contains("쪽") -> {
+                    pages = bookSpec[0].text().toString().replace("쪽", "").toInt()
+                }
+                text.contains("g") -> {
+                    weight= bookSpec[1].text().toString().replace("g", "").toInt()
+                }
+                text.contains("mm") -> {
+                    val triple  = bookSpec[2].text().toString()
+                    .replace("mm", "").split("*").map { it.toInt() }
+                    width = triple[0]; height = triple[1]; thickness = triple[2]
+                }
+            }
+        }
+
         val (introduction, publisherComment, contentTable) = body
             .getElementsByClass("infoItem_data_text__bUgVI")
             .map { it.html().toString() }
