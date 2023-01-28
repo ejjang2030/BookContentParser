@@ -6,10 +6,12 @@ import com.ejjang2030.bookcontentparser.BookContentParser;
 import com.ejjang2030.bookcontentparser.api.kakao.KakaoSearchDocsResult;
 import com.ejjang2030.bookcontentparser.api.kakao.KakaoSearchResult;
 import com.ejjang2030.bookcontentparser.api.kakao.KakaoSearching;
+import com.ejjang2030.bookcontentparser.api.naver.BookCatalog;
 import kotlin.Pair;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function3;
 import kotlin.jvm.functions.Function4;
+import kotlin.jvm.functions.Function5;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -20,7 +22,7 @@ import java.util.Scanner;
 public class Main {
     static public void main(String[] args) {
         Main m = new Main();
-        m.testKakaoSearching();
+        m.testNaverSearching();
     }
 
     void testNaverSearching() {
@@ -53,11 +55,17 @@ public class Main {
                                     BookResult book = result.getItems().get(number);
                                     naver.getBookCatalog(
                                             book,
-                                            new Function4<Call<ResponseBody>, Response<ResponseBody>, BookCatalogResult, Throwable, Unit>() {
+                                            new Function5<BookResult, BookCatalog, Call<ResponseBody>, Response<ResponseBody>, Throwable, Unit>() {
                                                 @Override
-                                                public Unit invoke(Call<ResponseBody> call, Response<ResponseBody> res, BookCatalogResult catalog, Throwable t) {
-                                                    if(catalog != null) {
-                                                        String content = catalog.getDescriptions().getContentTable();
+                                                public Unit invoke(
+                                                    BookResult bookCatalogResult,
+                                                    BookCatalog bookCatalog,
+                                                    Call<ResponseBody> responseBodyCall,
+                                                    Response<ResponseBody> responseBodyResponse,
+                                                    Throwable throwable
+                                                ) {
+                                                    if(bookCatalog != null) {
+                                                        String content = bookCatalog.getContentsHtml();
                                                         List<String> contentList = BookContentParser.INSTANCE.getBookContentTableList(content);
                                                         ContentTreeParser tree = new ContentTreeParser(contentList);
                                                         System.out.println("tree : \n" + tree);
