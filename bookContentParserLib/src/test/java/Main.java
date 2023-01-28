@@ -52,7 +52,7 @@ public class Main {
                                     System.out.print("책 번호를 입력하세요 : ");
                                     Scanner sc = new Scanner(System.in);
                                     int number = sc.nextInt();
-                                    BookResult book = result.getItems().get(number);
+                                    final BookResult book = result.getItems().get(number);
                                     naver.getBookCatalog(
                                             book,
                                             new Function5<BookResult, BookCatalog, Call<ResponseBody>, Response<ResponseBody>, Throwable, Unit>() {
@@ -66,8 +66,10 @@ public class Main {
                                                 ) {
                                                     if(bookCatalog != null) {
                                                         String content = bookCatalog.getContentsHtml();
+                                                        System.out.println("content : " + content);
+                                                        List<String> list = bookCatalog.getBookContentTableList();
                                                         List<String> contentList = BookContentParser.INSTANCE.getBookContentTableList(content);
-                                                        ContentTreeParser tree = new ContentTreeParser(contentList);
+                                                        ContentTreeParser tree = new ContentTreeParser(list);
                                                         System.out.println("tree : \n" + tree);
                                                     }
                                                     return Unit.INSTANCE;
