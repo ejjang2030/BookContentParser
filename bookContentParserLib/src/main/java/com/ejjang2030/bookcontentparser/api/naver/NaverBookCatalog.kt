@@ -1,6 +1,7 @@
 package com.ejjang2030.bookcontentparser.api.naver
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import okhttp3.ResponseBody
@@ -36,7 +37,7 @@ object BookCatalogBuilder {
         val fullCategoryId = jsonObject["fullCategoryId"].asString
         val fullCategoryName = jsonObject["fullCategoryName"].asString
         val title = jsonObject["title"].asString
-        val subtitle = jsonObject["subtitle"].asString
+        val subtitle = if(jsonObject["subtitle"] != JsonNull.INSTANCE) jsonObject["subtitle"].asString else null
         val publisher = jsonObject["publisher"].asString
         val publishDay = jsonObject["publishDay"].asString
         val isNew = jsonObject["isNew"].asBoolean
@@ -46,23 +47,23 @@ object BookCatalogBuilder {
         val authorList = jsonObject["authorList"].asJsonArray.map { it.asJsonObject["name"].asString }.toList()
 //        val illustratorList = jsonObject["illustratorList"].asJsonArray
 //        val translatorList = jsonObject["translatorList"].asJsonArray
-        val bestsellerRanking = jsonObject["bestsellerRanking"].asString
+        val bestsellerRanking = if(jsonObject["bestsellerRanking"] != JsonNull.INSTANCE) jsonObject["bestsellerRanking"].asString else null
 //        val awardList = jsonObject["awardList"].asJsonArray
         val description = jsonObject["description"].asString
         val descriptionSourceMallName = jsonObject["descriptionSourceMallName"].asString
-        val publisherReview = jsonObject["publisherReview"].asString
-        val publisherReviewSourceMallName = jsonObject["publisherReviewSourceMallName"].asString
+        val publisherReview = if(jsonObject["publisherReview"] != JsonNull.INSTANCE) jsonObject["publisherReview"].asString else null
+        val publisherReviewSourceMallName = if(jsonObject["publisherReviewSourceMallName"] != JsonNull.INSTANCE) jsonObject["publisherReviewSourceMallName"].asString else null
 //        val searchTagList = jsonObject["searchTagList"].asJsonArray
-        val detailSpecImage = jsonObject["detailSpecImage"].asString
+        val detailSpecImage = if(jsonObject["detailSpecImage"] != JsonNull.INSTANCE) jsonObject["detailSpecImage"].asString else null
         val detailSpecImageList = jsonObject["detailSpecImageList"].asJsonArray.map { it.asString }.toList()
-        val detailSpecImageOwnMallName = jsonObject["detailSpecImageOwnMallName"].asString
+        val detailSpecImageOwnMallName = if(jsonObject["detailSpecImageOwnMallName"] != JsonNull.INSTANCE) jsonObject["detailSpecImageOwnMallName"].asString else null
         val contentsHtml = jsonObject["contentsHtml"].asString
         val contentsSourceMallName = jsonObject["contentsSourceMallName"].asString
         val isbn = jsonObject["isbn"].asString
         val isOversea = jsonObject["isOversea"].asBoolean
         val pages = jsonObject["pages"].asInt
-        val weight = jsonObject["weight"].asString
-        val size = jsonObject["size"].asString
+        val weight = if(jsonObject["weight"] != JsonNull.INSTANCE) jsonObject["weight"].asString else null
+        val size = if(jsonObject["size"] != JsonNull.INSTANCE) jsonObject["size"].asString else null
         val _statistics = jsonObject["statistics"].asJsonObject
         val statistics = _statistics.keySet().map {
             val book = _statistics[it].asJsonObject
@@ -80,13 +81,13 @@ object BookCatalogBuilder {
 //        val otherCoverList = jsonObject["otherCoverList"].asJsonArray
 //        val audioclipList = jsonObject["audioclipList"].asJsonArray
         val authorIntroList = jsonObject["authorIntroList"].asJsonArray.map {
-            val authorId = it.asJsonObject["authorId"].asString
-            val name = it.asJsonObject["name"].asString
+            val authorId = if(it.asJsonObject["authorId"] != JsonNull.INSTANCE) it.asJsonObject["authorId"].asString else null
+            val name = if(it.asJsonObject["name"] != JsonNull.INSTANCE) it.asJsonObject["name"].asString else null
             val authorType = it.asJsonObject["authorType"].asString
             val intro = it.asJsonObject["intro"].asString
             AuthorIntro(authorId,name,authorType,intro)
         }.toList()
-        val authorIntroOwnMallName = jsonObject["authorIntroOwnMallName"].asString
+        val authorIntroOwnMallName = if(jsonObject["authorIntroOwnMallName"] != JsonNull.INSTANCE) jsonObject["authorIntroOwnMallName"].asString else null
 //        val bookFromOtherPublisherList = jsonObject["bookFromOtherPublisherList"].asJsonArray
         val authorOtherProductList = jsonObject["authorOtherProductList"].asJsonArray.map {
             val json = it.asJsonObject
@@ -170,7 +171,7 @@ data class BookCatalog(
     val fullCategoryId: String,
     val fullCategoryName: String,
     val title: String,
-    val subtitle: String,
+    val subtitle: String?,
     val publisher: String,
     val publishDay: String,
     val isNew: Boolean,
@@ -180,23 +181,23 @@ data class BookCatalog(
     val authorList: List<String>,
 //    val illustratorList: List<*>,
 //    val translatorList: List<*>,
-    val bestsellerRanking: String,
+    val bestsellerRanking: String?,
 //    val awardList: List<*>,
     val description: String,
     val descriptionSourceMallName: String,
-    val publisherReview: String,
-    val publisherReviewSourceMallName: String,
+    val publisherReview: String?,
+    val publisherReviewSourceMallName: String?,
 //    val searchTagList: List<*>,
-    val detailSpecImage: String,
+    val detailSpecImage: String?,
     val detailSpecImageList: List<String>,
-    val detailSpecImageOwnMallName: String,
+    val detailSpecImageOwnMallName: String?,
     val contentsHtml: String,
     val contentsSourceMallName: String,
     val isbn: String,
     val isOversea: Boolean,
     val pages: Int,
-    val weight: String,
-    val size: String,
+    val weight: String?,
+    val size: String?,
     val statistics: List<BookStatistics>,
 //    val attributeList: List<*>,
 //    val seriesList: List<*>,
@@ -206,22 +207,24 @@ data class BookCatalog(
 //    val otherCoverList: List<*>,
 //    val audioclipList: List<*>,
     val authorIntroList: List<AuthorIntro>,
-    val authorIntroOwnMallName: String,
+    val authorIntroOwnMallName: String?,
 //    val bookFromOtherPublisherList: List<*>,
     val authorOtherProductList: List<AuthorOtherProduct>
 ) {
+    override fun toString(): String {
+        val sb = StringBuilder()
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        sb.append("BookCatalog(${title}) ---------\n")
+        sb.append(gson.toJson(jsonObject) + "\n")
+        sb.append("END -----------------------------")
+        return sb.toString()
+    }
 
+    fun getBookContentTableList(): List<String> {
+        return this.contentsHtml.split("\n").filter { it.isNotEmpty() && it.isNotBlank() }.toMutableList()
+    }
 }
 
-
-//override fun toString(): String {
-  //  val sb = StringBuilder()
-    //val gson = GsonBuilder().setPrettyPrinting().create()
-    //sb.append("BookCatalog(${title}) ---------\n")
-    //sb.append(gson.toJson(jsonObject) + "\n")
-    //sb.append("END : printPrettierJson() -------------------------------------------")
-    //return sb.toString()
-//}
 data class BookStatistics(
     val name: String,
     val totalCount: Int,
@@ -230,8 +233,8 @@ data class BookStatistics(
 )
 
 data class AuthorIntro(
-    val authorId: String,
-    val name: String,
+    val authorId: String?,
+    val name: String?,
     val authorType: String,
     val intro: String
 )
