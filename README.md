@@ -19,7 +19,7 @@ app의 build.gradle 파일에 아래 코드와 같이 추가하여주세요.
 
 ```groovy
 dependencies {
-    implementation 'com.github.ejjang2030:BookContentParser:1.0.11'
+    implementation 'com.github.ejjang2030:BookContentParser:1.0.13'
 }
 ```
 
