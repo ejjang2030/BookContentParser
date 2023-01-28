@@ -89,7 +89,8 @@ object BookCatalogBuilder {
         }.toList()
         val authorIntroOwnMallName = if(jsonObject["authorIntroOwnMallName"] != JsonNull.INSTANCE) jsonObject["authorIntroOwnMallName"].asString else null
 //        val bookFromOtherPublisherList = jsonObject["bookFromOtherPublisherList"].asJsonArray
-        val authorOtherProductList = jsonObject["authorOtherProductList"].asJsonArray.map {
+        val _authorOtherProductList = if(jsonObject["authorOtherProductList"] != null) jsonObject["authorOtherProductList"].asJsonArray else null
+        val authorOtherProductList: List<AuthorOtherProduct>? = _authorOtherProductList?.map {
             val json = it.asJsonObject
             val id = json["id"].asString
             val isAdult1 = json["isAdult"].asBoolean
@@ -98,8 +99,7 @@ object BookCatalogBuilder {
             val title1 = json["title"].asString
             val crUrl = json["crUrl"].asString
             AuthorOtherProduct(id, isAdult1, publishDay1, thumbnailUrl1, title1, crUrl)
-        }.toList()
-
+        }?.toList()
 
         return BookCatalog(
             jsonObject = jsonObject,
@@ -209,7 +209,7 @@ data class BookCatalog(
     val authorIntroList: List<AuthorIntro>,
     val authorIntroOwnMallName: String?,
 //    val bookFromOtherPublisherList: List<*>,
-    val authorOtherProductList: List<AuthorOtherProduct>
+    val authorOtherProductList: List<AuthorOtherProduct>?
 ) {
     override fun toString(): String {
         val sb = StringBuilder()
