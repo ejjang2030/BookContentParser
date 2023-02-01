@@ -226,8 +226,9 @@ data class BookCatalog(
             contents = contents.replace("<b>", "")
                 .replace("</b>", "")
             var list = contents.split("\n")
-            var list2 = list.map { it.split(" | ") }.flatten().toMutableList()
+            var list2 = list.map { it.split("|") }.flatten().toMutableList()
             var list3 = list2.map { it.split(" / ") }.flatten()
+            var list4 = list3.map { it.split("│") }.flatten()
             return list3.filter { it.isNotEmpty() && it.isNotBlank() }.toMutableList()
         }
         return null
