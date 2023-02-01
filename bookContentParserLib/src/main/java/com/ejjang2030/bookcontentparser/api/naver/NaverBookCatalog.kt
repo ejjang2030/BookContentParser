@@ -225,7 +225,10 @@ data class BookCatalog(
             var contents = this.contentsHtml
             contents = contents.replace("<b>", "")
                 .replace("</b>", "")
-            return contents.split("\n").filter { it.isNotEmpty() && it.isNotBlank() }.toMutableList()
+            var list = contents.split("\n")
+            var list2 = list.map { it.split(" | ") }.flatten().toMutableList()
+            var list3 = list2.map { it.split(" / ") }.flatten()
+            return list3.filter { it.isNotEmpty() && it.isNotBlank() }.toMutableList()
         }
         return null
     }
