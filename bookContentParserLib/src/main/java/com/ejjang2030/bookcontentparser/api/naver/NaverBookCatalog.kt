@@ -39,7 +39,7 @@ object BookCatalogBuilder {
         val title = jsonObject["title"].asString
         val subtitle = if(jsonObject["subtitle"] != JsonNull.INSTANCE) jsonObject["subtitle"].asString else null
         val publisher = jsonObject["publisher"].asString
-        val publishDay = jsonObject["publishDay"].asString
+        val publishDay = if(jsonObject["publishDay"] != JsonNull.INSTANCE) jsonObject["publishDay"].asString else null
         val isNew = jsonObject["isNew"].asBoolean
         val isBestseller = jsonObject["isBestseller"].asBoolean
         val isAdult = jsonObject["isAdult"].asBoolean
@@ -173,7 +173,7 @@ data class BookCatalog(
     val title: String,
     val subtitle: String?,
     val publisher: String,
-    val publishDay: String,
+    val publishDay: String?,
     val isNew: Boolean,
     val isBestseller: Boolean,
     val isAdult: Boolean,

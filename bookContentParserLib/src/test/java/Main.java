@@ -42,7 +42,7 @@ public class Main {
                 query,
                 display,
                 start,
-                "date",
+                "sim",
                 new Function3<Call<BookSearchResult>, Response<BookSearchResult>, Throwable, Unit>() {
                     @Override
                     public Unit invoke(Call<BookSearchResult> call, Response<BookSearchResult> res, Throwable t) {
