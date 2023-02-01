@@ -49,16 +49,16 @@ object BookCatalogBuilder {
 //        val translatorList = jsonObject["translatorList"].asJsonArray
         val bestsellerRanking = if(jsonObject["bestsellerRanking"] != JsonNull.INSTANCE) jsonObject["bestsellerRanking"].asString else null
 //        val awardList = jsonObject["awardList"].asJsonArray
-        val description = jsonObject["description"].asString
-        val descriptionSourceMallName = jsonObject["descriptionSourceMallName"].asString
+        val description = if(jsonObject["description"] != JsonNull.INSTANCE) jsonObject["description"].asString else null
+        val descriptionSourceMallName = if(jsonObject["descriptionSourceMallName"] != JsonNull.INSTANCE) jsonObject["descriptionSourceMallName"].asString else null
         val publisherReview = if(jsonObject["publisherReview"] != JsonNull.INSTANCE) jsonObject["publisherReview"].asString else null
         val publisherReviewSourceMallName = if(jsonObject["publisherReviewSourceMallName"] != JsonNull.INSTANCE) jsonObject["publisherReviewSourceMallName"].asString else null
 //        val searchTagList = jsonObject["searchTagList"].asJsonArray
         val detailSpecImage = if(jsonObject["detailSpecImage"] != JsonNull.INSTANCE) jsonObject["detailSpecImage"].asString else null
         val detailSpecImageList = jsonObject["detailSpecImageList"].asJsonArray.map { it.asString }.toList()
         val detailSpecImageOwnMallName = if(jsonObject["detailSpecImageOwnMallName"] != JsonNull.INSTANCE) jsonObject["detailSpecImageOwnMallName"].asString else null
-        val contentsHtml = jsonObject["contentsHtml"].asString
-        val contentsSourceMallName = jsonObject["contentsSourceMallName"].asString
+        val contentsHtml = if(jsonObject["contentsHtml"] != JsonNull.INSTANCE) jsonObject["contentsHtml"].asString else null
+        val contentsSourceMallName = if(jsonObject["contentsSourceMallName"] != JsonNull.INSTANCE) jsonObject["contentsSourceMallName"].asString else null
         val isbn = jsonObject["isbn"].asString
         val isOversea = jsonObject["isOversea"].asBoolean
         val pages = jsonObject["pages"].asInt
@@ -183,16 +183,16 @@ data class BookCatalog(
 //    val translatorList: List<*>,
     val bestsellerRanking: String?,
 //    val awardList: List<*>,
-    val description: String,
-    val descriptionSourceMallName: String,
+    val description: String?,
+    val descriptionSourceMallName: String?,
     val publisherReview: String?,
     val publisherReviewSourceMallName: String?,
 //    val searchTagList: List<*>,
     val detailSpecImage: String?,
     val detailSpecImageList: List<String>,
     val detailSpecImageOwnMallName: String?,
-    val contentsHtml: String,
-    val contentsSourceMallName: String,
+    val contentsHtml: String?,
+    val contentsSourceMallName: String?,
     val isbn: String,
     val isOversea: Boolean,
     val pages: Int,
@@ -220,8 +220,14 @@ data class BookCatalog(
         return sb.toString()
     }
 
-    fun getBookContentTableList(): List<String> {
-        return this.contentsHtml.split("\n").filter { it.isNotEmpty() && it.isNotBlank() }.toMutableList()
+    fun getBookContentTableList(): List<String>? {
+        if(this.contentsHtml != null) {
+            var contents = this.contentsHtml
+            contents = contents.replace("<b>", "")
+                .replace("</b>", "")
+            return contents.split("\n").filter { it.isNotEmpty() && it.isNotBlank() }.toMutableList()
+        }
+        return null
     }
 }
 
