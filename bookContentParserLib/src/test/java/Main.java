@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -28,8 +29,11 @@ public class Main {
     void testNaverSearching() {
         final NaverSearching naver = new NaverSearching(SecretId.INSTANCE.getNAVER_CLIENT_ID(), SecretId.INSTANCE.getNAVER_CLIENT_ID_SECRET());
         Scanner scanner = new Scanner(System.in);
-        System.out.print("검색하고자 하는 책 키워드를 입력하세요 : ");
-        String query = scanner.nextLine();
+        System.out.print("검색하고자 하는 책 키워드를 입력하세요(나가기 : exit()) : ");
+        final String query = scanner.nextLine();
+        if(Objects.equals(query, "exit()")) {
+            return;
+        }
         System.out.print("표시하고자 하는 책 수를 입력하세요 : ");
         int display = scanner.nextInt();
         System.out.print("어디서부터 찾고 싶으세요? : ");
@@ -38,14 +42,14 @@ public class Main {
                 query,
                 display,
                 start,
-                "sim",
+                "date",
                 new Function3<Call<BookSearchResult>, Response<BookSearchResult>, Throwable, Unit>() {
                     @Override
                     public Unit invoke(Call<BookSearchResult> call, Response<BookSearchResult> res, Throwable t) {
                         if(res != null) {
                             if(res.isSuccessful()) {
                                 BookSearchResult result = res.body();
-                                if(result != null) {
+                                if((result != null) && (result.getItems().size() != 0)) {
                                     for(int i = 0; i < result.getItems().size(); i++) {
                                         System.out.println(i + "번 " + result.getItems().get(i).getTitle());
                                     }
@@ -69,17 +73,26 @@ public class Main {
                                                         System.out.println("content : " + content);
                                                         List<String> list = bookCatalog.getBookContentTableList();
                                                         List<String> contentList = BookContentParser.INSTANCE.getBookContentTableList(content);
-                                                        ContentTreeParser tree = new ContentTreeParser(list);
-                                                        System.out.println("tree : \n" + tree);
+                                                        if(list != null) {
+                                                            ContentTreeParser tree = new ContentTreeParser(list);
+                                                            System.out.println("tree : \n" + tree);
+                                                        } else {
+                                                            System.out.println("목차 정보가 없습니다.");
+                                                        }
+                                                        testNaverSearching();
                                                     }
                                                     return Unit.INSTANCE;
                                                 }
                                             });
+                                } else {
+                                    System.out.println(query + "에 대한 검색 결과가 없습니다.");
+                                    System.out.println("다시 검색해 주세요.");
+                                    System.out.println("-----------------------------------");
+                                    testNaverSearching();
                                 }
                             } else {
                                 System.out.println(res.message());
                             }
-
                         }
                         return Unit.INSTANCE;
                     }
